@@ -13,7 +13,7 @@ public class EnemyController : MonoBehaviour
         targetpos = transform.position;
     }
 
-    void Update()
+    void FixedUpdate()
     {
         transform.position = new Vector3(Mathf.Sin(Time.time)*1.0f+ targetpos.x, targetpos.y, targetpos.z);
     }
