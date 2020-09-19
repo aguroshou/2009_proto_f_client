@@ -8,6 +8,9 @@ public class EnemyController : MonoBehaviour, IBulletDamaged
     public int hp = 5;
 
     [SerializeField]
+    private hpDirector _hpDirector;
+
+    [SerializeField]
     private AudioClip breakClip;
 
     [SerializeField]
@@ -24,6 +27,7 @@ public class EnemyController : MonoBehaviour, IBulletDamaged
 
     void Start()
     {
+        _hpDirector.HP = hp;
         targetpos = transform.position;
     }
 
@@ -34,6 +38,7 @@ public class EnemyController : MonoBehaviour, IBulletDamaged
 
     public void AddDamage(int damage)
     {
+        _hpDirector.DecreaseHp(damage);
         hp -= damage;
         sr.DOColor(Color.red, 0.1f)
             .SetLoops(2, LoopType.Yoyo);
