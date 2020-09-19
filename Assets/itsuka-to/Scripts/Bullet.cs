@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
 public class Bullet : MonoBehaviour
 {
     public float speed = 1.0f;
@@ -26,5 +28,11 @@ public class Bullet : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         // TODO:　弾を消す
+        if (collision.CompareTag("Enemy"))
+        {
+            var bulletDamaged = collision.gameObject.GetComponent<IBulletDamaged>();
+            bulletDamaged.AddDamage(attackPoint);
+            Destroy(gameObject);
+        }
     }
 }
