@@ -19,6 +19,7 @@ public class CoreCrystal : MonoBehaviour, IBulletDamaged
     private void Awake()
     {
         sr = GetComponent<SpriteRenderer>();
+        
     }
 
     // Start is called before the first frame update
@@ -41,6 +42,7 @@ public class CoreCrystal : MonoBehaviour, IBulletDamaged
         if (hp < 0)
         {
             SEManager.Instance.PlayOneShot(breakClip, breakVolume);
+            GameManager.Instance.ChangePhase();
             Destroy(gameObject);
         }
     }
