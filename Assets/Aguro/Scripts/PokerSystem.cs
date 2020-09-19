@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class GenerateStageAndBackground : MonoBehaviour
 {
+    //シューティングのシステムに渡す敵の数
+    public int enemyNumber;
 
     [SerializeField] List<Sprite> enemyCardSpriteList = new List<Sprite>();
 
@@ -13,8 +15,8 @@ public class GenerateStageAndBackground : MonoBehaviour
     int[] enemyCardsNumber = new int[numberOfCard];
     int[] playerCardsNumber = new int[numberOfCard];
 
-    int enemyCardVariety;
-    int playerCardVariety;
+    int enemyCardVariety = 6;
+    int playerCardVariety = 6;
 
     void PorkerStart()
     {
@@ -22,10 +24,14 @@ public class GenerateStageAndBackground : MonoBehaviour
         int[] playerCardsNumber = new int[5];
         for (int i = 0; i < numberOfCard; i++)
         {
-            enemyCardsNumber[i] = Random.Range(0, numberOfCard);
-            playerCardsNumber[i] = Random.Range(0, numberOfCard);
+            enemyCardsNumber[i] = Random.Range(0, enemyCardVariety);
+            playerCardsNumber[i] = Random.Range(0, playerCardVariety);
         }
-
+        
     }
+
+    
+
+
 
 }
