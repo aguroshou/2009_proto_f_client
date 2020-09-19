@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GenerateStageAndBackground : MonoBehaviour
+public class PokerSystem : MonoBehaviour
 {
     //シューティングのシステムに渡す敵の数
     public int enemyNumber;
