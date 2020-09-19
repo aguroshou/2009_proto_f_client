@@ -16,7 +16,18 @@ public class PokerSystem : MonoBehaviour
     //シューティングのシステムに渡す敵の数
     public int enemyNumber;
 
-    //シューティングのシステムに渡すPlayerの揃えたペアによる効果の配列
+    //シューティングのシステムに渡すEnemyの揃えたペアによる出現数と種類の配列
+    public int[] enemyCardTypeLevel = new int[playerCardType];
+    //最低0〜最大4が代入されます
+    //(例)1番目が3カード、4番目が2カードのフルハウスのとき
+    //enemyCardTypeLevel[0] = 0; //0番目の敵の数は0体
+    //enemyCardTypeLevel[1] = 2; //1番目の敵の数は2体
+    //enemyCardTypeLevel[2] = 0; //2番目の敵の数は0体
+    //enemyCardTypeLevel[3] = 0; //3番目の敵の数は0体
+    //enemyCardTypeLevel[4] = 1; //4番目の敵の数は1体
+    //enemyCardTypeLevel[5] = 0; //5番目の敵の数は0体
+
+    //シューティングのシステムに渡すPlayerの揃えたペアによる効果レベルの配列
     public int[] playerCardTypeLevel = new int[playerCardType];
     //最低0〜最大4が代入されます
     //(例)1番目が3カード、4番目が2カードのフルハウスのとき
@@ -48,32 +59,28 @@ public class PokerSystem : MonoBehaviour
     {
         for (int i = 0; i < numberOfCard; i++)
         {
-            enemyCardsNumber[i] = Random.Range(0, enemyCardType);
-            isEnemyCardSelected[i] = true;
-        }
-        for (int i = 0; i < numberOfCard; i++)
-        {
             playerCardsNumber[i] = Random.Range(0, playerCardType);
             isPlayerCardSelected[i] = true;
         }
+        for (int i = 0; i < numberOfCard; i++)
+        {
+            enemyCardsNumber[i] = Random.Range(0, enemyCardType);
+            isEnemyCardSelected[i] = true;
+        }
+        UpdatePlayerCardTypeLevel();
         ChangePlayerCardSprite();
+        UpdateEnemyCardTypeLevel();
         ChangeEnemyCardSprite();
     }
 
-    public void ChangeCard()
+    public void ShuffleCards()
     {
-        ChangePlayerCard();
-        ChangeEnemyCard();
+        ShufflePlayerCards();
+        ShuffleEnemyCards();
     }
 
-    public void ChangePlayerCard()
+    public void ShufflePlayerCards()
     {
-        int[] playerCardTypeEachSum = new int[playerCardType];
-        for (int i = 0; i < numberOfCard; i++)
-        {
-            playerCardTypeEachSum[playerCardsNumber[i]]++;
-        }
-
         for (int i = 0; i < numberOfCard; i++)
         {
             if (isPlayerCardSelected[i] == true)
@@ -81,6 +88,7 @@ public class PokerSystem : MonoBehaviour
                 playerCardsNumber[i] = Random.Range(0, playerCardType);
             }
         }
+        UpdatePlayerCardTypeLevel();
         ChangePlayerCardSprite();
     }
 
@@ -116,7 +124,28 @@ public class PokerSystem : MonoBehaviour
         playerCardObjects[cardNumber].transform.position = position;
     }
 
-    public void ChangeEnemyCard()
+    void UpdatePlayerCardTypeLevel()
+    {
+        int[] playerCardTypeEachSum = new int[playerCardType];
+        for (int i = 0; i < numberOfCard; i++)
+        {
+            playerCardTypeEachSum[playerCardsNumber[i]]++;
+        }
+
+        for (int i = 0; i < playerCardType; i++)
+        {
+            if (playerCardTypeEachSum[i] >= 2)
+            {
+                playerCardTypeLevel[i] = playerCardTypeEachSum[i] - 1;
+            }
+            else
+            {
+                playerCardTypeLevel[i] = 0;
+            }
+        }
+    }
+
+    public void ShuffleEnemyCards()
     {
         int[] enemyCardTypeEachSum = new int[enemyCardType];
         for (int i = 0; i < numberOfCard; i++)
@@ -132,6 +161,7 @@ public class PokerSystem : MonoBehaviour
                 isEnemyCardSelected[i] = true;
             }
         }
+        UpdateEnemyCardTypeLevel();
         ChangeEnemyCardSprite();
     }
 
@@ -144,6 +174,29 @@ public class PokerSystem : MonoBehaviour
                 Image image = enemyCardObjects[i].GetComponent<Image>();
                 image.sprite = enemyCardSpriteList[enemyCardsNumber[i]];
                 isEnemyCardSelected[i] = false;
+            }
+        }
+    }
+
+    void UpdateEnemyCardTypeLevel()
+    {
+        int[] enemyCardTypeEachSum = new int[enemyCardType];
+        for (int i = 0; i < numberOfCard; i++)
+        {
+            enemyCardTypeEachSum[enemyCardsNumber[i]]++;
+        }
+
+        enemyNumber = 0;
+        for (int i = 0; i < enemyCardType; i++)
+        {
+            if (enemyCardTypeEachSum[i] >= 2)
+            {
+                enemyCardTypeLevel[i] = enemyCardTypeEachSum[i] - 1;
+                enemyNumber += enemyCardTypeLevel[i];
+            }
+            else
+            {
+                enemyCardTypeLevel[i] = 0;
             }
         }
     }
