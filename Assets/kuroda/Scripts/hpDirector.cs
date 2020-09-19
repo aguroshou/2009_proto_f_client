@@ -4,19 +4,25 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class hpDirector : MonoBehaviour
-{
-    [SerializeField] EnemyController ec;
-    Slider _slider;
-    int _hp;
+{ 
+    [SerializeField] Slider slider;
+
+    private int _hp;
+    public int HP
+    {
+        set
+        {
+            _hp = value;
+        }
+    }
     void Start()
     {
-        _slider = GameObject.Find("Slider").GetComponent<Slider>();
+        
     }
 
-
-    private void FixedUpdate()
+    public void DecreaseHp(int damage)
     {
-        _slider.value = _hp;
-        _hp = ec.hp;
+        _hp -= damage;
+        slider.value = _hp;
     }
 }
