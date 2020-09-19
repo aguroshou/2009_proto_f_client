@@ -7,6 +7,16 @@ public class PlayerController : MonoBehaviour
     private Vector3 position;
     private Vector3 screenToWorldPointPosition;
 
+    private AudioSource aSource;
+    [SerializeField]
+    private AudioClip shootSE;
+
+
+    private void Awake()
+    {
+        aSource = GetComponent<AudioSource>();
+    }
+
     void Start()
     {
         
@@ -15,6 +25,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        aSource.PlayOneShot(shootSE);
         // Vector3でマウス位置座標を取得する
         position = Input.mousePosition;
         // Z軸修正
