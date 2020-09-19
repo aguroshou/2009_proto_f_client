@@ -6,7 +6,10 @@ using UniRx;
 public class GameManager : SingletonMonoBehaviour<GameManager>
 {
     [SerializeField]
-    private int maxPhase = 10;  // 最大のウェーブ数 
+    private float shootingTimeLimit = 20f;
+
+    [SerializeField]
+    private int maxPhase = 10;  // 最大のウェーブ数
 
     /// <summary>
     /// Wave : 現在のウェーブ数
@@ -53,4 +56,34 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
             }
         }
     }
+
+    public ReactiveProperty<float> ShootingTime = new ReactiveProperty<float>(0f);
+
+    private void Start()
+    {
+        Phase.Subscribe((phase) =>
+        {
+            if (phase == EGamePhase.SHOOTING_PHASE)
+            {
+                ShootingTime.Value = shootingTimeLimit;
+            }
+        });
+    }
+
+    private void Update()
+    {
+        if (Phase.Value == EGamePhase.SHOOTING_PHASE)
+        {
+            float time = ShootingTime.Value;
+            time -= Time.deltaTime;
+            if (time < 0f)
+            {
+                time = 0f;
+                ChangePhase();
+            }
+
+            ShootingTime.Value = time;
+        }
+    }
+
 }

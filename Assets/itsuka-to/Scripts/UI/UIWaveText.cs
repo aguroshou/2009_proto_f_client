@@ -8,7 +8,7 @@ public class UIWaveText : MonoBehaviour
 {
     private Text text;
 
-    private void Awake()
+    private void Start()
     {
         text = GetComponent<Text>();
 
