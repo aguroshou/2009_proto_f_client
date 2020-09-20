@@ -6,13 +6,13 @@ using UnityEngine.UI;
 public class GetPokerSystemReferenceForPlayerCardButton : MonoBehaviour
 {
     [SerializeField] int playerCardNumber;
-    GameObject pokerSystemGameObject;
-    // Start is called before the first frame update
+    GameObject pokerSystemObject;
+
     void Start()
     {
-        pokerSystemGameObject = GameObject.Find("PokerSystemGameObject");
+        pokerSystemObject = GameObject.Find("PokerSystemGameObject");
         Button button = GetComponent<Button>();
-        PokerSystem pokerSystem =  pokerSystemGameObject.GetComponent<PokerSystem>();
+        PokerSystem pokerSystem =  pokerSystemObject.GetComponent<PokerSystem>();
         button.onClick.AddListener(() => pokerSystem.PlayerCardClicked(playerCardNumber));
     }
 }
