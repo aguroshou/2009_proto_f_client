@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 using UniRx;
-
+using System.Linq;
 
 public class PokerSystem : MonoBehaviour
 {
@@ -73,6 +73,7 @@ public class PokerSystem : MonoBehaviour
 
     void StartPorker()
     {
+        // シャッフル
         for (int i = 0; i < numberOfCard; i++)
         {
             playerCardsNumber[i] = Random.Range(0, playerCardType);
@@ -83,17 +84,74 @@ public class PokerSystem : MonoBehaviour
             enemyCardsNumber[i] = Random.Range(0, enemyCardType);
             isEnemyCardSelected[i] = true;
         }
+
         UpdatePlayerCardTypeLevel();
         ChangePlayerCardSprite();
         UpdateEnemyCardTypeLevel();
         ChangeEnemyCardSprite();
     }
 
+    /// <summary>
+    /// シャッフルボタンを押した時の動作
+    /// </summary>
     public void ShuffleCards()
     {
         ShufflePlayerCards();
         ShuffleEnemyCards();
+        SendGameManager(playerCardTypeLevel, enemyCardTypeLevel);
     }
+
+    /// <summary>
+    /// ゲームマネージャーへ値を送る
+    /// </summary>
+    /// <param name="playerCardTypeLevel"></param>
+    /// <param name="enemyCardTypeLevel"></param>
+    public void SendGameManager(int[] playerCardTypeLevel, int[] enemyCardTypeLevel)
+    {
+        GameManager.Instance.SavePokerHand(CheckPair(playerCardTypeLevel), CheckPair(enemyCardTypeLevel));
+    }
+
+    public GameManager.EPokerHand CheckPair(int[] cardTypeLevel)
+    {
+        List<int> ctLavelList = new List<int>(cardTypeLevel);
+
+        int pairCount = 0;
+        foreach(int pairs in cardTypeLevel)
+        {
+            pairCount += pairs;
+        }
+
+        if(pairCount == 0)
+        {
+            return GameManager.EPokerHand.HIGH_CARD;  // 役なし
+        }else if(pairCount == 1)
+        {
+            return GameManager.EPokerHand.ONE_PAIR;  // ワンペア
+        }else if(ctLavelList.Where(p => p == 1).Count() == 2)
+        {
+            return GameManager.EPokerHand.TWO_PAIR;  // ツーペア
+        }else if(ctLavelList.Where(p => p==2).Count() == 1)
+        {
+            if(ctLavelList.Where(p=> p==1).Count() == 1)
+            {
+                return GameManager.EPokerHand.FULL_HOUSE;  // フルハウス
+            }
+            else
+            {
+                return GameManager.EPokerHand.THREE_CARD;  // スリーカード
+            }
+        }else if (ctLavelList.Where(p => p == 3).Count() == 1)
+        {
+            return GameManager.EPokerHand.FOUR_CARD;  // フォーカード
+        }
+        else
+        {
+            return GameManager.EPokerHand.FIVE_CARD;  // ファイブカード
+        }
+
+    }
+
+
 
     public void ShufflePlayerCards()
     {
@@ -108,6 +166,9 @@ public class PokerSystem : MonoBehaviour
         ChangePlayerCardSprite();
     }
 
+    /// <summary>
+    /// 値と画像を一致させる
+    /// </summary>
     private void ChangePlayerCardSprite()
     {
         for (int i = 0; i < numberOfCard; i++)
@@ -125,6 +186,10 @@ public class PokerSystem : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// カードをクリックして，シャッフル用に選択（プレイヤー）
+    /// </summary>
+    /// <param name="cardNumber"></param>
     public void PlayerCardClicked(int cardNumber)
     {
         isPlayerCardSelected[cardNumber] = !isPlayerCardSelected[cardNumber];
@@ -141,6 +206,9 @@ public class PokerSystem : MonoBehaviour
         playerCardObjects[cardNumber].transform.position = position;
     }
 
+    /// <summary>
+    /// ペア=>1 , 3カード=>2
+    /// </summary>
     void UpdatePlayerCardTypeLevel()
     {
         int[] playerCardTypeEachSum = new int[playerCardType];

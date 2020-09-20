@@ -48,7 +48,6 @@ public class PlayerController : MonoBehaviour, IBulletDamaged
         });
     }
 
-    // Update is called once per frame
     void Update()
     {
         GameManager.EGamePhase phase = GameManager.Instance.Phase.Value;

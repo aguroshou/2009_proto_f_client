@@ -30,6 +30,9 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
     }
 
 
+
+
+
     /// <summary>
     /// ボス戦かどうか
     /// </summary>
@@ -113,9 +116,59 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
         }
     }
 
+    /// <summary>
+    /// ポーカーの役
+    /// </summary>
+    public enum EPokerHand : int
+    {
+        NONE = -1, // 初期値
+        HIGH_CARD = 0,  // ブタ
+        ONE_PAIR = 1,  // ワンペア
+        TWO_PAIR = 2,  // ツーペア
+        THREE_CARD = 3,  // スリーカード
+        FULL_HOUSE = 4,  // フルハウス
+        FOUR_CARD = 5,  // フォーカード
+        FIVE_CARD = 6  // ファイブカード
+    }
+
+    /// <summary>
+    /// プレイヤーが勝ったか（プレイヤーが基準）
+    /// </summary>
+    public enum EPokerWin : int
+    {
+        PLAYER_WIN = 1,
+        DRAW = 0,
+        ENEMY_WIN = -1,
+    }
+
+    ReactiveProperty<EPokerHand> playerPokerHand = new ReactiveProperty<EPokerHand>(EPokerHand.NONE);
+    ReactiveProperty<EPokerHand> enemyPokerHand = new ReactiveProperty<EPokerHand>(EPokerHand.NONE);
+    ReactiveProperty<EPokerWin> pokerWin = new ReactiveProperty<EPokerWin>(EPokerWin.DRAW);
+
+    public void SavePokerHand(EPokerHand player, EPokerHand enemy)
+    {
+        playerPokerHand.Value = player;
+        enemyPokerHand.Value = enemy;
+
+        if(player > enemy)
+        {
+            pokerWin.Value = EPokerWin.PLAYER_WIN;
+        }else if(player < enemy)
+        {
+            pokerWin.Value = EPokerWin.ENEMY_WIN;
+        }
+        else
+        {
+            pokerWin.Value = EPokerWin.DRAW;
+        }
+
+        // 射撃間隔
+        PlayerManager.Instance.ShootingInterval = 0.7f - 0.1f * (int)player;
+    }
+
     public ReactiveProperty<float> ShootingTime = new ReactiveProperty<float>(0f);
 
-    public ReactiveProperty<int> Chip = new ReactiveProperty<int>(0);
+    public ReactiveProperty<int> Chip = new ReactiveProperty<int>(10000);
 
     private void Start()
     {

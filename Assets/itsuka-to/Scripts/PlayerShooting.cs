@@ -8,8 +8,7 @@ public class PlayerShooting : MonoBehaviour
     public GameObject bullet;
     public int attackPoint = 1;  // 攻撃力
 
-    [SerializeField]
-    private float _duration = 0.1f;
+    public float _duration = 0.1f;
 
     private Coroutine c;
 
