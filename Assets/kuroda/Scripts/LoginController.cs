@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class LoginController : MonoBehaviour
 {
     [SerializeField] PopButton button;
+    [SerializeField] NameDirector nd;
 
     void Start()
     {
@@ -14,6 +15,7 @@ public class LoginController : MonoBehaviour
 
     private void onButtonDown()
     {
-        SceneManager.LoadSceneAsync("SelectScene");
+        nd.InputText();
+        //SceneManager.LoadSceneAsync("SelectScene");
     }
 }

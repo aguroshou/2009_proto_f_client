@@ -5,19 +5,13 @@ using UnityEngine.UI;
 
 public class NameDirector : MonoBehaviour
 {
-    public InputField inputField;
-    public Text text;
+    [SerializeField] NetworkSample ns;
 
-    void Start()
-    {
-        inputField = inputField.GetComponent<InputField>();
-        text = text.GetComponent<Text>();
-    }
+    public Text text;
 
     public void InputText()
     {
-        text.text = inputField.text;
+        Debug.Log(text.text);
+        StartCoroutine(ns.UserCriate(text.text));
     }
-
-
 }
