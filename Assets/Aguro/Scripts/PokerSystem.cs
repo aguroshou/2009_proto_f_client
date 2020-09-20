@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+using UniRx;
+
+
 public class PokerSystem : MonoBehaviour
 {
     //ポーカーのカードの枚数は5枚で固定
@@ -52,15 +55,20 @@ public class PokerSystem : MonoBehaviour
 
     private void Start()
     {
-        for (int i = 0; i < numberOfCard; i++)
-        {
-            playerCardObjects[i] = GameObject.Find("PlayerCardButton" + i.ToString());
-        }
-        for (int i = 0; i < numberOfCard; i++)
-        {
-            enemyCardObjects[i] = GameObject.Find("EnemyCardImage" + i.ToString());
-        }
-        StartPorker();
+        GameManager.Instance.Phase.Subscribe((phase) => {
+            if(phase == GameManager.EGamePhase.POKER_PHASE)
+            {
+                for (int i = 0; i < numberOfCard; i++)
+                {
+                    playerCardObjects[i] = GameObject.Find("PlayerCardButton" + i.ToString());
+                }
+                for (int i = 0; i < numberOfCard; i++)
+                {
+                    enemyCardObjects[i] = GameObject.Find("EnemyCardImage" + i.ToString());
+                }
+                StartPorker();
+            }
+        });
     }
 
     void StartPorker()
