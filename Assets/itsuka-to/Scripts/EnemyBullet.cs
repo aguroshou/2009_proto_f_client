@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
-
-public class Bullet : MonoBehaviour
+public class EnemyBullet : MonoBehaviour
 {
     public float speed = 1.0f;
     public int attackPoint = 3;
@@ -20,26 +18,19 @@ public class Bullet : MonoBehaviour
 
     void Start()
     {
-        rb2d.velocity = new Vector2(0f, speed);
+        rb2d.velocity = new Vector2(0f, -speed);
         StartCoroutine(TimeoutDestroyCoroutine(lifetime));
-    }
-
-    void Update()
-    {
-        
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        // TODO:　弾を消す
-        if (collision.CompareTag("Enemy"))
+        if (collision.CompareTag("Player"))
         {
             var bulletDamaged = collision.gameObject.GetComponent<IBulletDamaged>();
             bulletDamaged.AddDamage(attackPoint);
             Destroy(gameObject);
         }
     }
-
 
     private IEnumerator TimeoutDestroyCoroutine(float lifetime)
     {
