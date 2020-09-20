@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2100009892788896992}
   - component: {fileID: 2100009892788896999}
   m_Layer: 5
-  m_Name: EnemyCardImage (3)
+  m_Name: EnemyCardImage3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -132,7 +132,7 @@ GameObject:
   - component: {fileID: 2100009893187696402}
   - component: {fileID: 2100009893187696401}
   m_Layer: 5
-  m_Name: EnemyCardImage
+  m_Name: EnemyCardImage0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -206,8 +206,9 @@ GameObject:
   - component: {fileID: 2100009893332338787}
   - component: {fileID: 2100009893332338786}
   - component: {fileID: 2100009893332338785}
+  - component: {fileID: 7099039664670508114}
   m_Layer: 5
-  m_Name: PlayerCardButton
+  m_Name: PlayerCardButton0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -313,7 +314,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 6794786488093370672, guid: 087d865c678084514979c39be17c1811,
+          type: 3}
         m_MethodName: PlayerCardClicked
         m_Mode: 3
         m_Arguments:
@@ -324,6 +326,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &7099039664670508114
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2100009893332338791}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64619c614a3e94650b91c81a633ac3f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerCardNumber: 0
 --- !u!1 &2100009893406152876
 GameObject:
   m_ObjectHideFlags: 0
@@ -336,7 +351,7 @@ GameObject:
   - component: {fileID: 2100009893406152879}
   - component: {fileID: 2100009893406152878}
   m_Layer: 5
-  m_Name: EnemyCardImage (4)
+  m_Name: EnemyCardImage4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -410,7 +425,7 @@ GameObject:
   - component: {fileID: 2100009893598935200}
   - component: {fileID: 2100009893598935207}
   m_Layer: 5
-  m_Name: EnemyCardImage (2)
+  m_Name: EnemyCardImage2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -484,6 +499,7 @@ GameObject:
   - component: {fileID: 2100009893630056501}
   - component: {fileID: 2100009893630056500}
   - component: {fileID: 2100009893630056459}
+  - component: {fileID: 1309141367889400183}
   m_Layer: 5
   m_Name: ShuffleCardButton
   m_TagString: Untagged
@@ -602,6 +618,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1309141367889400183
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2100009893630056457}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 113c162b91ba94d49bcfb4d8915feff6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2100009893688374435
 GameObject:
   m_ObjectHideFlags: 0
@@ -688,8 +716,9 @@ GameObject:
   - component: {fileID: 2100009893705047912}
   - component: {fileID: 2100009893705047919}
   - component: {fileID: 2100009893705047918}
+  - component: {fileID: 4115064253794752463}
   m_Layer: 5
-  m_Name: PlayerCardButton (2)
+  m_Name: PlayerCardButton2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -806,6 +835,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &4115064253794752463
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2100009893705047916}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64619c614a3e94650b91c81a633ac3f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerCardNumber: 2
 --- !u!1 &2100009893735405860
 GameObject:
   m_ObjectHideFlags: 0
@@ -818,8 +860,9 @@ GameObject:
   - component: {fileID: 2100009893735405856}
   - component: {fileID: 2100009893735405863}
   - component: {fileID: 2100009893735405862}
+  - component: {fileID: 4003388616951252689}
   m_Layer: 5
-  m_Name: PlayerCardButton (3)
+  m_Name: PlayerCardButton3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -936,6 +979,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &4003388616951252689
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2100009893735405860}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64619c614a3e94650b91c81a633ac3f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerCardNumber: 3
 --- !u!1 &2100009893738598015
 GameObject:
   m_ObjectHideFlags: 0
@@ -948,7 +1004,7 @@ GameObject:
   - component: {fileID: 2100009893738598010}
   - component: {fileID: 2100009893738598009}
   m_Layer: 5
-  m_Name: EnemyCardImage (1)
+  m_Name: EnemyCardImage1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1096,8 +1152,9 @@ GameObject:
   - component: {fileID: 2100009893986146673}
   - component: {fileID: 2100009893986146672}
   - component: {fileID: 2100009893986146679}
+  - component: {fileID: 6542080998253810269}
   m_Layer: 5
-  m_Name: PlayerCardButton (4)
+  m_Name: PlayerCardButton4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1214,6 +1271,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &6542080998253810269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2100009893986146677}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64619c614a3e94650b91c81a633ac3f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerCardNumber: 4
 --- !u!1 &2100009894003112726
 GameObject:
   m_ObjectHideFlags: 0
@@ -1304,8 +1374,9 @@ GameObject:
   - component: {fileID: 2100009894017082382}
   - component: {fileID: 2100009894017082381}
   - component: {fileID: 2100009894017082380}
+  - component: {fileID: 6858283286950406519}
   m_Layer: 5
-  m_Name: PlayerCardButton (1)
+  m_Name: PlayerCardButton1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1422,6 +1493,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &6858283286950406519
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2100009894017082370}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64619c614a3e94650b91c81a633ac3f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerCardNumber: 1
 --- !u!1 &2100009894451142687
 GameObject:
   m_ObjectHideFlags: 0

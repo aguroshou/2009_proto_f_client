@@ -52,6 +52,14 @@ public class PokerSystem : MonoBehaviour
 
     private void Start()
     {
+        for (int i = 0; i < numberOfCard; i++)
+        {
+            playerCardObjects[i] = GameObject.Find("PlayerCardButton" + i.ToString());
+        }
+        for (int i = 0; i < numberOfCard; i++)
+        {
+            enemyCardObjects[i] = GameObject.Find("EnemyCardImage" + i.ToString());
+        }
         StartPorker();
     }
 
@@ -98,7 +106,8 @@ public class PokerSystem : MonoBehaviour
         {
             if (isPlayerCardSelected[i] == true)
             {
-                Image image = playerCardObjects[i].GetComponent<Image>();
+                GameObject playerCardImageObject = playerCardObjects[i].transform.Find("PlayerCardImage").gameObject;
+                Image image = playerCardImageObject.GetComponent<Image>();
                 image.sprite = playerCardSpriteList[playerCardsNumber[i]];
                 Vector3 position = playerCardObjects[i].transform.position;
                 position.y -= 100.0f;
