@@ -45,14 +45,18 @@ public class BuySkillSystem : MonoBehaviour
     //スキルを購入できなくなる売り切れ用の文字「SOLDOUT」を表示する代わりに、異常に値段を高くして買えなくする
     const int SOLDOUT_PRICE = 999999;
 
+    //スキルレベルは0〜9
+    const int SKILL_LEVEL_MAX = 10;
+
     //スキルは購入するごとに値段が上がる
     //skillPriceTable[スキルの種類][n回目に購入するときの値段]
     [SerializeField]
-    int[,] skillPriceTable = new int[SKILL_TYPE, 10] {
+    int[,] skillPriceTable = new int[SKILL_TYPE, SKILL_LEVEL_MAX] {
         //FIXME: パラメーター調整
         { 300, 450, 600, 750, 900, 1050, 1200, 1350, 1500, SOLDOUT_PRICE },
         { 300, 450, 600, 750, 900, 1050, 1200, 1350, 1500, SOLDOUT_PRICE },
         { 300, 450, 600, 750, 900, 1050, 1200, 1350, 1500, SOLDOUT_PRICE },
+        //↓未実装
         { SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE },
         { SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE },
         { SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE },
@@ -74,13 +78,13 @@ public class BuySkillSystem : MonoBehaviour
         { 10, 12, 14, 16, 18, 20, 22, 24, 26, 26 },
         { 0.60f, 0.55f, 0.5f, 0.45f, 0.4f, 0.35f, 0.3f, 0.25f, 0.20f, 0.20f },
         //↓未実装
-        { SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE },
-        { SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE },
-        { SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE },
-        { SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE },
-        { SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE },
-        { SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE },
-        { SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE }
+        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
     };
 
     void Start()
@@ -92,11 +96,16 @@ public class BuySkillSystem : MonoBehaviour
         playerManagerObject = GameObject.Find("PlayerManager");
         playerManager = playerManagerObject.GetComponent<PlayerManager>();
 
-        GameManager.Instance.Chip.Value = 1000;
+        //デバッグのため
+        //GameManager.Instance.Chip.Value = 100000;
 
-        parameterTexts[0].text = "Lv0¥n攻撃力:1";
-        parameterTexts[1].text = "Lv0¥nHP:10";
-        parameterTexts[2].text = "Lv0¥n当たり判定:0.66";
+        //ステータス強化ボタンのテキストの初期文字列は以下のプログラムまたはInspectorに手動で入力する必要があります
+        //parameterTexts[0].text = "Lv0\n攻撃力:1";
+        //parameterTexts[1].text = "Lv0\nHP:10";
+        //parameterTexts[2].text = "Lv0\n当たり判定:0.66";
+        //priceTexts[0].text = "チップ:300";
+        //priceTexts[1].text = "チップ:300";
+        //priceTexts[2].text = "チップ:300";
     }
 
     //スキルレベルからパラメーターに変換する機能を追加する
@@ -143,15 +152,16 @@ public class BuySkillSystem : MonoBehaviour
                     parameterJapaneseName = "HP";
                     break;
                 case (int)SkillNumber.CollisionRange:
-                    newParameter = playerManager.AttackPoint.ToString();
+                    newParameter = playerManager.CircleCollidorRadius.ToString();
                     parameterJapaneseName = "当たり判定";
                     break;
                 default:
                     break;
             }
 
-            parameterTexts[buySkillNumber].text = "Lv" + buySkillLevel[buySkillNumber] + "¥n" + ":" + parameterJapaneseName;
+            parameterTexts[buySkillButtonNumber].text = "Lv" + buySkillLevel[buySkillButtonNumber] + "\n" + parameterJapaneseName + ":" + newParameter;
 
+            priceTexts[buySkillButtonNumber].text = skillPriceTable[buySkillNumber, buySkillLevel[buySkillNumber]] + "チップ";
         }
     }
 }
