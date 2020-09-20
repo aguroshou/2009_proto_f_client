@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
 
-public class PlayerShooting : MonoBehaviour
+public class EnemyShooting : MonoBehaviour
 {
     public GameObject bullet;
-    public int attackPoint = 1;  // 攻撃力
 
     [SerializeField]
     private float _duration = 0.1f;
@@ -16,29 +15,28 @@ public class PlayerShooting : MonoBehaviour
     void Start()
     {
         GameManager.Instance.Phase.Subscribe((phase) => {
-            if(phase == GameManager.EGamePhase.SHOOTING_PHASE)
+            if (phase == GameManager.EGamePhase.SHOOTING_PHASE)
             {
                 c = StartCoroutine(ShootingCoroutine());
             }
-            else {
-                if(c != null) StopCoroutine(c);
+            else
+            {
+                if (c != null) StopCoroutine(c);
             }
 
-        });
+        }).AddTo(this);
     }
 
     void Update()
     {
-        
+
     }
 
     IEnumerator ShootingCoroutine()
     {
         while (true)
         {
-            var b = Instantiate(bullet, transform.position, Quaternion.identity);
-            var bulletScript = b.GetComponent<Bullet>();
-            bulletScript.attackPoint = attackPoint;  // 攻撃力を変更
+            Instantiate(bullet, transform.position, Quaternion.identity);
             yield return new WaitForSeconds(_duration);
         }
     }
