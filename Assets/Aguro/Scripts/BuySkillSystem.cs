@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BuySkillSystem : MonoBehaviour
 {
@@ -18,6 +19,10 @@ public class BuySkillSystem : MonoBehaviour
 
     //スキルを購入するための選択肢ボタンの数
     const int BUY_SKILL_BUTTON_NUMBER = 3;
+
+    //テキストはPrefabのInspectorから参照を付ける
+    [SerializeField] Text[] priceTexts = new Text[BUY_SKILL_BUTTON_NUMBER];
+    [SerializeField] Text[] parameterTexts = new Text[BUY_SKILL_BUTTON_NUMBER];
 
     [SerializeField] GameObject[] buySkillButtonObjects = new GameObject[BUY_SKILL_BUTTON_NUMBER];
 
@@ -44,6 +49,7 @@ public class BuySkillSystem : MonoBehaviour
     //skillPriceTable[スキルの種類][n回目に購入するときの値段]
     [SerializeField]
     int[,] skillPriceTable = new int[SKILL_TYPE, 10] {
+        //FIXME: パラメーター調整
         { 300, 450, 600, 750, 900, 1050, 1200, 1350, 1500, SOLDOUT_PRICE },
         { 300, 450, 600, 750, 900, 1050, 1200, 1350, 1500, SOLDOUT_PRICE },
         { 300, 450, 600, 750, 900, 1050, 1200, 1350, 1500, SOLDOUT_PRICE },
@@ -60,12 +66,13 @@ public class BuySkillSystem : MonoBehaviour
     //skillPriceTable[スキルの種類][n回目に購入したときのスキルのパラメーター]
     //初期パラメーター値はこのテーブルに入っていないです
     //floatにしていますが、一部int型のスキルパラメーターがあるので、(int)のキャストしなければいけないです
+    //最後の10番目の値は使わない
     [SerializeField]
     float[,] skillParameterTable = new float[SKILL_TYPE, 10] {
-        //FIXME: 初期値を井塚さんに聞いて直す
-        { 100, 120, 500, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE },
-        { 100, 120, 500, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE },
-        { 100, 120, 500, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE },
+        //FIXME: パラメーター調整
+        { 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, },
+        { 10, 12, 14, 16, 18, 20, 22, 24, 26, 26 },
+        { 0.60f, 0.55f, 0.5f, 0.45f, 0.4f, 0.35f, 0.3f, 0.25f, 0.20f, 0.20f },
         //↓未実装
         { SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE },
         { SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE },
@@ -86,6 +93,10 @@ public class BuySkillSystem : MonoBehaviour
         playerManager = playerManagerObject.GetComponent<PlayerManager>();
 
         GameManager.Instance.Chip.Value = 1000;
+
+        parameterTexts[0].text = "Lv0¥n攻撃力:1";
+        parameterTexts[1].text = "Lv0¥nHP:10";
+        parameterTexts[2].text = "Lv0¥n当たり判定:0.66";
     }
 
     //スキルレベルからパラメーターに変換する機能を追加する
@@ -116,6 +127,31 @@ public class BuySkillSystem : MonoBehaviour
 
             //次に購入するときのために購入するスキルレベルを1段階上げる
             buySkillLevel[buySkillNumber]++;
+
+            //スキル購入画面のテキストを変更する
+            string newParameter = "";
+            string parameterJapaneseName = "";
+            
+            switch (buySkillNumber)
+            {
+                case (int)SkillNumber.AttackUp:
+                    newParameter = playerManager.AttackPoint.ToString();
+                    parameterJapaneseName = "攻撃力";
+                    break;
+                case (int)SkillNumber.MaxHitPointUp:
+                    newParameter = playerManager.MaxHp.ToString();
+                    parameterJapaneseName = "HP";
+                    break;
+                case (int)SkillNumber.CollisionRange:
+                    newParameter = playerManager.AttackPoint.ToString();
+                    parameterJapaneseName = "当たり判定";
+                    break;
+                default:
+                    break;
+            }
+
+            parameterTexts[buySkillNumber].text = "Lv" + buySkillLevel[buySkillNumber] + "¥n" + ":" + parameterJapaneseName;
+
         }
     }
 }
