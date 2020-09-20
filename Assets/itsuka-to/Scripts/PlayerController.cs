@@ -82,6 +82,7 @@ public class PlayerController : MonoBehaviour, IBulletDamaged
         if(hp_t < 0)
         {
             hp.Value = 0;
+            GameManager.Instance.GameOver();  // ゲームオーバー処理
         }
         else
         {

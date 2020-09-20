@@ -9,7 +9,9 @@ public class PlayerManager : SingletonMonoBehaviour<PlayerManager>
     public ReactiveProperty<int> Hp;
 
 
-
+    /// <summary>
+    /// (int) PlayerManager.Instance.MaxHp
+    /// </summary>
     // プレイヤーの最大体力
     public int MaxHp
     {

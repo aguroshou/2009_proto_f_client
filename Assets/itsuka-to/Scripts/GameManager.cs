@@ -26,6 +26,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
         SHOOTING_PHASE,  // シューティング
         STATUS_POWERUP_PHASE,  // ステータスあげる
         RESULT_PHASE,  // 結果画面
+        GAMEOVER,  // ゲームオーバー
     }
 
 
@@ -94,6 +95,21 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
         else
         {
             Debug.LogError("ボスじゃない or シューティングフェーズではないのでクリアできません");
+        }
+    }
+
+    /// <summary>
+    /// GameOver，phaseの特殊遷移
+    /// </summary>
+    public void GameOver()
+    {
+        if(Phase.Value == EGamePhase.SHOOTING_PHASE)
+        {
+            Phase.Value = EGamePhase.GAMEOVER;
+        }
+        else
+        {
+            Debug.LogError("シューティングフェーズではないのにゲームオーバーできません");
         }
     }
 
