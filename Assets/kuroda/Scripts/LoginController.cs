@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class TitleController : MonoBehaviour
+public class LoginController : MonoBehaviour
 {
     [SerializeField] PopButton button;
 
@@ -14,6 +14,6 @@ public class TitleController : MonoBehaviour
 
     private void onButtonDown()
     {
-        SceneManager.LoadSceneAsync("LoginScene");
+        SceneManager.LoadSceneAsync("SelectScene");
     }
 }
