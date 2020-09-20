@@ -7,7 +7,7 @@ public class GetPokerSystemReferenceForPlayerCardButton : MonoBehaviour
 {
     [SerializeField] int playerCardNumber;
     GameObject pokerSystemGameObject;
-    // Start is called before the first frame update
+
     void Start()
     {
         pokerSystemGameObject = GameObject.Find("PokerSystemGameObject");
