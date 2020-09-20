@@ -59,6 +59,8 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 
     public ReactiveProperty<float> ShootingTime = new ReactiveProperty<float>(0f);
 
+    public ReactiveProperty<int> Chip = new ReactiveProperty<int>(0);
+
     private void Start()
     {
         Phase.Subscribe((phase) =>

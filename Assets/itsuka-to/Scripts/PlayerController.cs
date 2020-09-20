@@ -1,20 +1,33 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UniRx;
 
+/// <summary>
+/// 参考: http://negi-lab.blog.jp/MouseFollow2D
+/// </summary>
 public class PlayerController : MonoBehaviour
 {
-    private Vector3 position;
+    private Vector3 targetPos;
     private Vector3 screenToWorldPointPosition;
 
-    private AudioSource aSource;
     [SerializeField]
-    private AudioClip shootSE;
+    private float hidePosY = -10f;  // シューティング以外の画面外に隠れる時
 
+    // X, Y座標の移動可能範囲
+    [System.Serializable]
+    public class Bounds
+    {
+        public float xMin, xMax, yMin, yMax;
+    }
+    [SerializeField] Bounds bounds;
+
+    // 補間の強さ（0f～1f） 。0なら追従しない。1なら遅れなしに追従する。
+    [SerializeField, Range(0f, 1f)] private float followStrength;
 
     private void Awake()
     {
-        aSource = GetComponent<AudioSource>();
+
     }
 
     void Start()
@@ -25,14 +38,27 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        aSource.PlayOneShot(shootSE);
-        // Vector3でマウス位置座標を取得する
-        position = Input.mousePosition;
-        // Z軸修正
-        position.z = 10f;
-        // マウス位置座標をスクリーン座標からワールド座標に変換する
-        screenToWorldPointPosition = Camera.main.ScreenToWorldPoint(position);
-        // ワールド座標に変換されたマウス座標を代入
-        gameObject.transform.position = screenToWorldPointPosition;
+        GameManager.EGamePhase phase = GameManager.Instance.Phase.Value;
+
+        if(phase == GameManager.EGamePhase.SHOOTING_PHASE)
+        {
+            targetPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        }
+        else
+        {
+            targetPos = transform.position;
+            targetPos.y = hidePosY;  //隠す
+        }
+
+        // X, Y座標の範囲を制限する
+        targetPos.x = Mathf.Clamp(targetPos.x, bounds.xMin, bounds.xMax);
+        targetPos.y = Mathf.Clamp(targetPos.y, bounds.yMin, bounds.yMax);
+
+        // Z座標を修正する
+        targetPos.z = 0f;
+
+        // このスクリプトがアタッチされたゲームオブジェクトを、マウス位置に線形補間で追従させる
+        transform.position = Vector3.Lerp(transform.position, targetPos, followStrength);
+
     }
 }
