@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class BuySkillSystem : MonoBehaviour
 {
-
+    GameObject playerManagerObject;
     [SerializeField] PlayerManager playerManager;
 
     enum SkillNumber : int
     {
-        AttakUp = 0,
+        AttackUp = 0,
         MaxHitPointUp = 1,
         CollisionRange = 2
     }
@@ -21,8 +21,8 @@ public class BuySkillSystem : MonoBehaviour
 
     [SerializeField] GameObject[] buySkillButtonObjects = new GameObject[BUY_SKILL_BUTTON_NUMBER];
 
-    //シューティングに渡す取得したスキル一覧の配列と購入した数=スキルのレベル
-    public int[] boughtSkillLevel = new int[SKILL_TYPE];
+    //これから購入するスキルのレベルをそれぞれ配列で保存(現在の購入した数 == 現在のスキルのレベル == buySkillLevel[これから買うスキルの番号] - 1 )
+    public int[] buySkillLevel = new int[SKILL_TYPE];
 
     //スキルの番号
     [SerializeField] int buttonSkillNumber;
@@ -44,9 +44,9 @@ public class BuySkillSystem : MonoBehaviour
     //skillPriceTable[スキルの種類][n回目に購入するときの値段]
     [SerializeField]
     int[,] skillPriceTable = new int[SKILL_TYPE, 10] {
-        { 300, 450, 500, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE },
-        { 300, 450, 500, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE },
-        { 300, 450, 500, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE },
+        { 300, 450, 600, 750, 900, 1050, 1200, 1350, 1500, SOLDOUT_PRICE },
+        { 300, 450, 600, 750, 900, 1050, 1200, 1350, 1500, SOLDOUT_PRICE },
+        { 300, 450, 600, 750, 900, 1050, 1200, 1350, 1500, SOLDOUT_PRICE },
         { SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE },
         { SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE },
         { SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE },
@@ -62,6 +62,7 @@ public class BuySkillSystem : MonoBehaviour
     //floatにしていますが、一部int型のスキルパラメーターがあるので、(int)のキャストしなければいけないです
     [SerializeField]
     float[,] skillParameterTable = new float[SKILL_TYPE, 10] {
+        //FIXME: 初期値を井塚さんに聞いて直す
         { 100, 120, 500, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE },
         { 100, 120, 500, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE },
         { 100, 120, 500, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE },
@@ -79,23 +80,42 @@ public class BuySkillSystem : MonoBehaviour
     {
         for (int i = 0; i < BUY_SKILL_BUTTON_NUMBER; i++)
         {
-            buySkillButtonObjects[i] = GameObject.Find("SkillButton" + i.ToString());
+            buySkillButtonObjects[i] = GameObject.Find("BuySkillButton" + i.ToString());
         }
+        playerManagerObject = GameObject.Find("PlayerManager");
+        playerManager = playerManagerObject.GetComponent<PlayerManager>();
+
+        GameManager.Instance.Chip.Value = 1000;
     }
 
     //スキルレベルからパラメーターに変換する機能を追加する
-    public void ClickSkillButton()
+    public void SkillButtonClicked(int buySkillButtonNumber)
     {
-        switch (buttonSkillNumber)
+        //スキルの種類を3種類よりも増やすなら変更が必要です
+        int buySkillNumber = buySkillButtonNumber;
+
+        if (GameManager.Instance.Chip.Value >= skillPriceTable[buySkillNumber, buySkillLevel[buySkillNumber]])
         {
-            case (int)SkillNumber.AttakUp:
-                //if (GameManager.Instance.Chip.Value >= skillPriceTable[buttonSkillNumber][])
-                {
-                    //playerManager.UpdateLevel(buttonSkillNumber);
-                }
-                break;
-            default:
-                break;
+            GameManager.Instance.Chip.Value -= skillPriceTable[buySkillNumber, buySkillLevel[buySkillNumber]];
+
+            //買ったスキルのパラメーターを反映させる
+            switch (buySkillNumber)
+            {
+                case (int)SkillNumber.AttackUp:
+                    playerManager.AttackPoint = (int)skillParameterTable[buySkillNumber, buySkillLevel[buySkillNumber]];
+                    break;
+                case (int)SkillNumber.MaxHitPointUp:
+                    playerManager.MaxHp = (int)skillParameterTable[buySkillNumber, buySkillLevel[buySkillNumber]];
+                    break;
+                case (int)SkillNumber.CollisionRange:
+                    playerManager.CircleCollidorRadius = skillParameterTable[buySkillNumber, buySkillLevel[buySkillNumber]];
+                    break;
+                default:
+                    break;
+            }
+
+            //次に購入するときのために購入するスキルレベルを1段階上げる
+            buySkillLevel[buySkillNumber]++;
         }
     }
 }
