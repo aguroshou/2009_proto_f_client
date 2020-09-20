@@ -9,17 +9,28 @@ using UnityEngine.UI;
 public class UIPlayerHPBar : MonoBehaviour
 {
     [SerializeField]
-    private float hidePosX = 100f;  // 隠れている時のY座標
+    private float hidePosX = 100f;  // 隠れている時のX座標
 
     [SerializeField]
-    private float displayPosX = 0f;  // タイムを表示している時のY座標
+    private float displayPosX = 0f;  // タイムを表示している時のX座標
+
+    [SerializeField]
+    private float HpBarHpFullPositionY = 0f;  // Hpが満タンの時のHpBarのY座標
+
+    [SerializeField]
+    private float HpBarHpEmptyPositionY = -1f;  // Hpが空の時のHpBarのY座標
 
     private RectTransform rectTran;
+
+    private RectTransform hpBarRectTran;
 
     // Start is called before the first frame update
     void Start()
     {
         rectTran = GetComponent<RectTransform>();
+
+        // 2階層下のHpBarのRectTransformを持ってくる
+        hpBarRectTran = transform.GetChild(0).GetChild(0).GetComponent<RectTransform>();
 
         GameManager.Instance.Phase.Subscribe((phase) =>
         {
@@ -54,6 +65,13 @@ public class UIPlayerHPBar : MonoBehaviour
             bar_image.color = new Color(1f, 1f, 1f, 1f);  // 非透明（通常）
         });
         trigger.triggers.Add(entry_pointer_exit);
+
+        PlayerManager.Instance.Hp.Subscribe((hp) => {
+        float posY = Mathf.Lerp(HpBarHpEmptyPositionY, HpBarHpFullPositionY,
+            (float)hp / PlayerManager.Instance.MaxHp);
+        Debug.Log((float)hp / PlayerManager.Instance.MaxHp);
+            hpBarRectTran.DOAnchorPosY(posY, 0.1f);
+        });
     }
 
     
