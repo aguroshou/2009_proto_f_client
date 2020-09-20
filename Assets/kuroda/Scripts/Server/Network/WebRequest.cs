@@ -49,6 +49,19 @@ namespace ProjectConnect.Network
         {
             yield return PostRequest("/user/create", requestDto, onSuccess, onError, false);
         }
+
+        public IEnumerator PushGameFinish(ScoreRequest requestDto, Action<RankingListResponse> onSuccess,
+            Action<string> onError = null)
+        {
+            yield return PostRequest("/game/finish", requestDto, onSuccess, onError, true);
+        }
+
+        public IEnumerator FetchRanking( Action<RankingListResponse> onSuccess,
+            Action<string> onError = null)
+        {
+            yield return GetRequest("/ranking/list", onSuccess, onError, true);
+        }
+
         /// <summary>
         /// ユーザー作成リクエストを行う処理
         /// </summary>
