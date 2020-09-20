@@ -37,6 +37,15 @@ public class PlayerController : MonoBehaviour, IBulletDamaged
     void Start()
     {
         hp.Value = maxHp;  // とりあえず初期HPはマックスで初期化
+
+        //　ボス戦でなく，ポーカーフェーズの開始時　体力を最大まで回復
+        GameManager.Instance.Phase.Subscribe((phase) => {
+            if(phase == GameManager.EGamePhase.POKER_PHASE &&
+                GameManager.Instance.IsBoss.Value == false)
+            {
+                hp.Value = maxHp;
+            }
+        });
     }
 
     // Update is called once per frame
