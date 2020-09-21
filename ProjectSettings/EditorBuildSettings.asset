@@ -11,4 +11,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/kuroda/Scenes/LoginScene.unity
     guid: e293a0c9ca1244cb69ae16017760ad21
+  - enabled: 1
+    path: Assets/kuroda/Scenes/MultiScene.unity
+    guid: 267501329dc454d3fa93ea322f886ce4
+  - enabled: 1
+    path: Assets/kuroda/Scenes/IngameScene.unity
+    guid: 9327dc6559e514747acb77d83ab7367f
   m_configObjects: {}

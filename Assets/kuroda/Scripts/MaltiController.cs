@@ -3,24 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SelectController : MonoBehaviour
+public class MaltiController : MonoBehaviour
 {
     [SerializeField] PopButton inGameButton;
-    [SerializeField] PopButton MultiButton;
+    [SerializeField] NetworkSample ns;
 
     void Start()
     {
         inGameButton.Init(onSoloPlayButtonDown);
-        MultiButton.Init(onMultiPlayButtonDown);
     }
 
     private void onSoloPlayButtonDown()
     {
         SceneManager.LoadSceneAsync("IngameScene");
-    }
-
-    private void onMultiPlayButtonDown()
-    {
-        SceneManager.LoadSceneAsync("MultiScene");
+        //StartCoroutine(ns.GameFinish(1000));
     }
 }

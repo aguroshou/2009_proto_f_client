@@ -10,7 +10,8 @@ public class RankingCell : MonoBehaviour
 
     public void SetText(int rank, string name, int score)
     {
-        targetText.text = rank + "い　" + name + "　スコア:" + score;
+        targetText.text = rank + "rank   " + name +
+        "   score:" + score;
     }
 
 }
