@@ -6,7 +6,6 @@ using UnityEngine.SceneManagement;
 public class MaltiController : MonoBehaviour
 {
     [SerializeField] PopButton inGameButton;
-    [SerializeField] NetworkSample ns;
 
     void Start()
     {
@@ -16,6 +15,5 @@ public class MaltiController : MonoBehaviour
     private void onSoloPlayButtonDown()
     {
         SceneManager.LoadSceneAsync("IngameScene");
-        //StartCoroutine(ns.GameFinish(1000));
     }
 }
