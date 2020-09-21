@@ -242,10 +242,22 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
     /// 賭けたHpの割合 1,0f => 何もかけてない，0f => 体力ない
     /// </summary>
     /// <param name="rate"></param>
-    public void SetBetHpRate(float rate)
+    public float SetBetHpRate(float r)
     {
-        betHpRate = rate;
-        PlayerManager.Instance.Hp.Value = (int)(rate * PlayerManager.Instance.MaxHp);
+        betHpRate = r;
+        PlayerManager.Instance.Hp.Value = (int)(r * PlayerManager.Instance.MaxHp);
+
+        //// 体力ベット
+        float rate = 1.0f - betHpRate;
+        rate *= 10;
+        int rateInt = (int)Math.Floor(rate);
+        if (rateInt < 0) rateInt = 0;
+        if (rateInt > betHpIncomeChipRate.Length - 1)
+        {
+            rateInt = betHpIncomeChipRate.Length - 1;
+        }
+        // Debug.Log("bet:" + chip);
+        return betHpIncomeChipRate[rateInt];
     }
 
     private void Start()
