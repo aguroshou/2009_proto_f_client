@@ -122,6 +122,7 @@ public class PokerSystem : MonoBehaviour
         ChangePlayerCardSprite(false);
         UpdateEnemyCardTypeLevel();
         ChangeEnemyCardSprite();
+        SendGameManager(playerCardTypeLevel, enemyCardTypeLevel);
     }
 
     /// <summary>
