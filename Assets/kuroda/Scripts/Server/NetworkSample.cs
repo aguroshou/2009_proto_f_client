@@ -4,6 +4,7 @@ using ProjectConnect.Network;
 using ProjectConnect.Network.RequestDto;
 using ProjectConnect.Network.ResponseDto;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class NetworkSample : MonoBehaviour
 {
@@ -82,7 +83,7 @@ public class NetworkSample : MonoBehaviour
         Debug.Log("成功");
         Debug.Log(userCreateResponse.token);
         Playerprefs.setplayerprefs(Playerprefs.PlayerKeys.TOKEN, userCreateResponse.token);
-
+        SceneManager.LoadSceneAsync("SelectScene");
     }
 
     private void OnErrorUserCreate(string errormasage)
