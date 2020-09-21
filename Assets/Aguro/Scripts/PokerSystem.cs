@@ -19,6 +19,7 @@ public class PokerSystem : MonoBehaviour
     //シューティングのシステムに渡す敵の数
     public int enemyNumber;
 
+
     //シューティングのシステムに渡すEnemyの揃えたペアによる出現数と種類の配列
     public int[] enemyCardTypeLevel = new int[playerCardType];
     //最低0〜最大4が代入されます
@@ -53,8 +54,14 @@ public class PokerSystem : MonoBehaviour
     bool[] isPlayerCardSelected = new bool[numberOfCard];
     bool[] isEnemyCardSelected = new bool[numberOfCard];
 
+    [SerializeField] GameObject shuffleCardButtonObject;
+
+    //シャッフルボタンを2回以上押せなくするため
+    //bool isShuffleButtonActive;
+
     private void Start()
     {
+        shuffleCardButtonObject = GameObject.Find("ShuffleCardButton");
         GameManager.Instance.Phase.Subscribe((phase) => {
             if(phase == GameManager.EGamePhase.POKER_PHASE)
             {
@@ -66,6 +73,8 @@ public class PokerSystem : MonoBehaviour
                 {
                     enemyCardObjects[i] = GameObject.Find("EnemyCardImage" + i.ToString());
                 }
+                
+                shuffleCardButtonObject.SetActive(true);
                 StartPorker();
             }
         });
@@ -86,7 +95,7 @@ public class PokerSystem : MonoBehaviour
         }
 
         UpdatePlayerCardTypeLevel();
-        ChangePlayerCardSprite();
+        ChangePlayerCardSprite(false);
         UpdateEnemyCardTypeLevel();
         ChangeEnemyCardSprite();
     }
@@ -98,6 +107,7 @@ public class PokerSystem : MonoBehaviour
     {
         ShufflePlayerCards();
         ShuffleEnemyCards();
+        shuffleCardButtonObject.active = false;
         SendGameManager(playerCardTypeLevel, enemyCardTypeLevel);
     }
 
@@ -151,8 +161,6 @@ public class PokerSystem : MonoBehaviour
 
     }
 
-
-
     public void ShufflePlayerCards()
     {
         for (int i = 0; i < numberOfCard; i++)
@@ -163,13 +171,15 @@ public class PokerSystem : MonoBehaviour
             }
         }
         UpdatePlayerCardTypeLevel();
-        ChangePlayerCardSprite();
+        ChangePlayerCardSprite(true);
     }
 
     /// <summary>
     /// 値と画像を一致させる
+    /// 引数のisShuffleは、シャッフルボタンを押したときか最初の初期化のどちらか
+    /// カードが下にさがる現象をとめるため
     /// </summary>
-    private void ChangePlayerCardSprite()
+    private void ChangePlayerCardSprite(bool isShuffle)
     {
         for (int i = 0; i < numberOfCard; i++)
         {
@@ -178,9 +188,12 @@ public class PokerSystem : MonoBehaviour
                 GameObject playerCardImageObject = playerCardObjects[i].transform.Find("PlayerCardImage").gameObject;
                 Image image = playerCardImageObject.GetComponent<Image>();
                 image.sprite = playerCardSpriteList[playerCardsNumber[i]];
-                Vector3 position = playerCardObjects[i].transform.position;
-                position.y -= 100.0f;
-                playerCardObjects[i].transform.position = position;
+                if (isShuffle)
+                {
+                    Vector3 position = playerCardObjects[i].transform.position;
+                    position.y -= 100.0f;
+                    playerCardObjects[i].transform.position = position;
+                }
                 isPlayerCardSelected[i] = false;
             }
         }
