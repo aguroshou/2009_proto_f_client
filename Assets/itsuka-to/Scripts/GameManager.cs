@@ -315,10 +315,13 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
                 chip += (int)(500 * value) / 100 * 100;
                 Debug.Log("timevonus:" + chip);
 
-                if (ShootingTime.Value <= 0.01)
+                Debug.Log("value" + ShootingTime.Value);
+                if (value <= 0.01f)
                 {
+                    Debug.Log("クリスタル非破壊なので減らしました");
                     chip /= 2;
                 }
+                Debug.Log("獲得チップ" + chip);
 
                 Chip.Value += chip;
                 totalChip += chip;
