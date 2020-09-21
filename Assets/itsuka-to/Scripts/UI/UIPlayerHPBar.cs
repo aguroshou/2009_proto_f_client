@@ -34,7 +34,8 @@ public class UIPlayerHPBar : MonoBehaviour
 
         GameManager.Instance.Phase.Subscribe((phase) =>
         {
-            if (phase == GameManager.EGamePhase.SHOOTING_PHASE)
+            if (phase == GameManager.EGamePhase.SHOOTING_PHASE &&
+                phase == GameManager.EGamePhase.SHOOTING_READY_PHASE)
             {
                 rectTran.DOAnchorPosX(displayPosX, 1.0f);
             }
@@ -69,7 +70,7 @@ public class UIPlayerHPBar : MonoBehaviour
         PlayerManager.Instance.Hp.Subscribe((hp) => {
         float posY = Mathf.Lerp(HpBarHpEmptyPositionY, HpBarHpFullPositionY,
             (float)hp / PlayerManager.Instance.MaxHp);
-        Debug.Log((float)hp / PlayerManager.Instance.MaxHp);
+        //Debug.Log((float)hp / PlayerManager.Instance.MaxHp);
             hpBarRectTran.DOAnchorPosY(posY, 0.1f);
         });
     }

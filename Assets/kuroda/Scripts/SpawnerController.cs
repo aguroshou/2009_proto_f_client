@@ -5,18 +5,16 @@ using UniRx;
 
 public class SpawnerController : MonoBehaviour
 {
-    [SerializeField] PokerSystem ps;
-
     public GameObject enemyPrefab;
+
+    public int SpawnCount = 3;
 
     void Start()
     {
-        int count;
-
         GameManager.Instance.Phase.Subscribe((phase) => {
             if(phase == GameManager.EGamePhase.SHOOTING_PHASE)
             {
-                for (count = 1; count <= 3; count = count + 1)
+                for (int count = 1; count <= SpawnCount; count = count + 1)
                 {
                     GameObject enemy = Instantiate(enemyPrefab, transform);  // EnemySpawnerの子に生成
 

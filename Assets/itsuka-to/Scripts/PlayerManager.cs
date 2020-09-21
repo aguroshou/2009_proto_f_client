@@ -9,7 +9,9 @@ public class PlayerManager : SingletonMonoBehaviour<PlayerManager>
     public ReactiveProperty<int> Hp;
 
 
-
+    /// <summary>
+    /// (int) PlayerManager.Instance.MaxHp
+    /// </summary>
     // プレイヤーの最大体力
     public int MaxHp
     {
@@ -28,7 +30,12 @@ public class PlayerManager : SingletonMonoBehaviour<PlayerManager>
         get { return playerCircleCollidor2D.radius; }
         set { playerCircleCollidor2D.radius = value; }
     }
-    
+
+    public float ShootingInterval
+    {
+        get { return playerShooting._duration; }
+        set { playerShooting._duration = value;  }
+    }
 
     // コンポーネント
     private PlayerShooting playerShooting;
