@@ -14,6 +14,6 @@ public class MaltiController : MonoBehaviour
 
     private void onSoloPlayButtonDown()
     {
-        SceneManager.LoadSceneAsync("IngameScene");
+        SceneManager.LoadSceneAsync("ItsukaEdit2");
     }
 }

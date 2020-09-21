@@ -16,7 +16,7 @@ public class SelectController : MonoBehaviour
 
     private void onSoloPlayButtonDown()
     {
-        SceneManager.LoadSceneAsync("IngameScene");
+        SceneManager.LoadSceneAsync("ItsukaEdit2");
     }
 
     private void onMultiPlayButtonDown()

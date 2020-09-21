@@ -14,6 +14,6 @@ public class ResultController : MonoBehaviour
 
     private void onSoloPlayButtonDown()
     {
-        SceneManager.LoadSceneAsync("IngameScene");
+        SceneManager.LoadSceneAsync("SelectScene");
     }
 }

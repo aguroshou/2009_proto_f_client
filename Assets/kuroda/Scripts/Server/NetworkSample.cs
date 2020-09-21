@@ -50,7 +50,7 @@ public class NetworkSample : MonoBehaviour
         webRequest.SetServerAddress("http://54.150.161.227:8080");
         var scoreRequest = new ScoreRequest();
         scoreRequest.score = score;
-        var token = Playerprefs.getplayerprefs(Playerprefs.PlayerKeys.TOKEN);
+        var token = Playerprefs.GetString(Playerprefs.PlayerKeys.TOKEN);
         if (string.IsNullOrEmpty(token))
         {
             Debug.LogError("なんもいてないよ");
@@ -66,7 +66,7 @@ public class NetworkSample : MonoBehaviour
     {
         var webRequest = new WebRequest();
         webRequest.SetServerAddress("http://54.150.161.227:8080");
-        var token = Playerprefs.getplayerprefs(Playerprefs.PlayerKeys.TOKEN);
+        var token = Playerprefs.GetString(Playerprefs.PlayerKeys.TOKEN);
         if (string.IsNullOrEmpty(token))
         {
             Debug.LogError("なんもいてないよ");
@@ -90,7 +90,7 @@ public class NetworkSample : MonoBehaviour
     {
         Debug.Log("成功");
         Debug.Log(userCreateResponse.token);
-        Playerprefs.setplayerprefs(Playerprefs.PlayerKeys.TOKEN, userCreateResponse.token);
+        Playerprefs.SetString(Playerprefs.PlayerKeys.TOKEN, userCreateResponse.token);
         SceneManager.LoadSceneAsync("SelectScene");
     }
 
