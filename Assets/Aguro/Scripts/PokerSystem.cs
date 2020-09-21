@@ -8,6 +8,8 @@ using System.Linq;
 
 public class PokerSystem : MonoBehaviour
 {
+    public GameObject pokerPhaseEndButton;
+
     //ポーカーのカードの枚数は5枚で固定
     const int numberOfCard = 5;
 
@@ -54,17 +56,37 @@ public class PokerSystem : MonoBehaviour
     bool[] isPlayerCardSelected = new bool[numberOfCard];
     bool[] isEnemyCardSelected = new bool[numberOfCard];
 
-    [SerializeField] GameObject shuffleCardButtonObject;
+    [SerializeField] public GameObject shuffleCardButtonObject;
 
     //シャッフルボタンを2回以上押せなくするため
     //bool isShuffleButtonActive;
 
+
+    private void OnEnable()
+    {
+        // shuffleCardButtonObject = GameObject.Find("ShuffleCardButton");
+        pokerPhaseEndButton.SetActive(false);
+        for (int i = 0; i < numberOfCard; i++)
+        {
+            playerCardObjects[i] = GameObject.Find("PlayerCardButton" + i.ToString());
+        }
+        for (int i = 0; i < numberOfCard; i++)
+        {
+            enemyCardObjects[i] = GameObject.Find("EnemyCardImage" + i.ToString());
+        }
+
+        shuffleCardButtonObject.SetActive(true);
+        StartPorker();
+    }
+
+
     private void Start()
     {
-        shuffleCardButtonObject = GameObject.Find("ShuffleCardButton");
-        GameManager.Instance.Phase.Subscribe((phase) => {
-            if(phase == GameManager.EGamePhase.POKER_PHASE)
-            {
+        // shuffleCardButtonObject = GameObject.Find("ShuffleCardButton");
+        pokerPhaseEndButton.SetActive(false);
+        //GameManager.Instance.Phase.Subscribe((phase) => {
+            //if(phase == GameManager.EGamePhase.POKER_PHASE)
+            //{
                 for (int i = 0; i < numberOfCard; i++)
                 {
                     playerCardObjects[i] = GameObject.Find("PlayerCardButton" + i.ToString());
@@ -76,8 +98,8 @@ public class PokerSystem : MonoBehaviour
                 
                 shuffleCardButtonObject.SetActive(true);
                 StartPorker();
-            }
-        });
+            //}
+        //});
     }
 
     void StartPorker()
@@ -109,6 +131,7 @@ public class PokerSystem : MonoBehaviour
         ShuffleEnemyCards();
         shuffleCardButtonObject.active = false;
         SendGameManager(playerCardTypeLevel, enemyCardTypeLevel);
+        pokerPhaseEndButton.SetActive(true);
     }
 
     /// <summary>
@@ -185,16 +208,24 @@ public class PokerSystem : MonoBehaviour
         {
             if (isPlayerCardSelected[i] == true)
             {
-                GameObject playerCardImageObject = playerCardObjects[i].transform.Find("PlayerCardImage").gameObject;
-                Image image = playerCardImageObject.GetComponent<Image>();
-                image.sprite = playerCardSpriteList[playerCardsNumber[i]];
-                if (isShuffle)
+                try
                 {
-                    Vector3 position = playerCardObjects[i].transform.position;
-                    position.y -= 100.0f;
-                    playerCardObjects[i].transform.position = position;
+                    GameObject playerCardImageObject = playerCardObjects[i].transform.Find("PlayerCardImage").gameObject;
+                    Image image = playerCardImageObject.GetComponent<Image>();
+                    image.sprite = playerCardSpriteList[playerCardsNumber[i]];
+                    if (isShuffle)
+                    {
+                        Vector3 position = playerCardObjects[i].transform.position;
+                        position.y -= 100.0f;
+                        playerCardObjects[i].transform.position = position;
+                    }
+                    isPlayerCardSelected[i] = false;
                 }
-                isPlayerCardSelected[i] = false;
+                catch (System.NullReferenceException e)
+                {
+                    Debug.LogError("参照エラーだが無視していく");
+                }
+
             }
         }
     }

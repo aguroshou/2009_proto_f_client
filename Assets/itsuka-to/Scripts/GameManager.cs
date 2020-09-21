@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
 using System;
+using UnityEngine.SceneManagement;
 
 public class GameManager : SingletonMonoBehaviour<GameManager>
 {
@@ -137,6 +138,40 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
         FIVE_CARD = 6  // ファイブカード
     }
 
+    static public string EPokerHandToString(EPokerHand hand)
+    {
+        switch (hand)
+        {
+            case EPokerHand.NONE:
+                return "なし";
+                break;
+            case EPokerHand.HIGH_CARD:
+                return "ハイカード";
+                break;
+            case EPokerHand.ONE_PAIR:
+                return "ワンペア";
+                break;
+            case EPokerHand.TWO_PAIR:
+                return "ツーペア";
+                break;
+            case EPokerHand.THREE_CARD:
+                return "スリーカード";
+                break;
+            case EPokerHand.FULL_HOUSE:
+                return "フルハウス";
+                break;
+            case EPokerHand.FOUR_CARD:
+                return "フォーカード";
+                break;
+            case EPokerHand.FIVE_CARD:
+                return "ファイブカード";
+                break;
+            default:
+                return "エラー";
+                break;
+        }
+    }
+
     /// <summary>
     /// プレイヤーが勝ったか（プレイヤーが基準）
     /// </summary>
@@ -147,9 +182,9 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
         ENEMY_WIN = -1,
     }
 
-    ReactiveProperty<EPokerHand> playerPokerHand = new ReactiveProperty<EPokerHand>(EPokerHand.NONE);
-    ReactiveProperty<EPokerHand> enemyPokerHand = new ReactiveProperty<EPokerHand>(EPokerHand.NONE);
-    ReactiveProperty<EPokerWin> pokerWin = new ReactiveProperty<EPokerWin>(EPokerWin.DRAW);
+    public ReactiveProperty<EPokerHand> playerPokerHand = new ReactiveProperty<EPokerHand>(EPokerHand.NONE);
+    public ReactiveProperty<EPokerHand> enemyPokerHand = new ReactiveProperty<EPokerHand>(EPokerHand.NONE);
+    public ReactiveProperty<EPokerWin> pokerWin = new ReactiveProperty<EPokerWin>(EPokerWin.DRAW);
     /// <summary>
     /// PokerSystemオブジェクトから味方・敵のポーカー役をセーブする
     /// </summary>
@@ -182,6 +217,9 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
     public ReactiveProperty<float> ShootingTime = new ReactiveProperty<float>(0f);
 
     public ReactiveProperty<int> Chip = new ReactiveProperty<int>(0);
+    public int totalChip = 0;  // スコアになる !!!!!!!!!
+
+
     public int[] basicIncomeChip = new int[11] {
         0, 1000, 1200, 1400, 1600, 1800, 2000, 2200, 2400, 2600, 2800
     };
@@ -265,6 +303,16 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
                 Debug.Log("timevonus:" + chip);
 
                 Chip.Value += chip;
+                totalChip += chip;
+                Debug.Log("TotalChip : " + totalChip);
+
+                /// TODO: 要編集！！！！！！！！！！！！！
+                if(Wave.Value >= maxPhase)
+                {
+                    Phase.Value = EGamePhase.RESULT_PHASE;
+                    SceneManager.LoadScene("ResultScene");
+                }
+
             }
         });
     }
