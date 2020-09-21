@@ -15,6 +15,7 @@ public class CoreCrystal : MonoBehaviour, IBulletDamaged
 
     private SpriteRenderer sr;
 
+    private int[] coreCrystalHitPointEachWave = { 75, 75, 110, 150, 180, 225, 300, 400, 600, 900, 1300 };
 
     private void Awake()
     {
@@ -25,7 +26,7 @@ public class CoreCrystal : MonoBehaviour, IBulletDamaged
     // Start is called before the first frame update
     void Start()
     {
-        
+        hp = coreCrystalHitPointEachWave[GameManager.Instance.Wave.Value];
     }
 
     // Update is called once per frame

@@ -46,24 +46,16 @@ public class BuySkillSystem : MonoBehaviour
     const int SOLDOUT_PRICE = 999999;
 
     //スキルレベルは0〜9
-    const int SKILL_LEVEL_MAX = 10;
+    const int SKILL_LEVEL_MAX = 20;
 
     //スキルは購入するごとに値段が上がる
     //skillPriceTable[スキルの種類][n回目に購入するときの値段]
     [SerializeField]
-    int[,] skillPriceTable = new int[SKILL_TYPE, SKILL_LEVEL_MAX] {
+    int[,] skillPriceTable = new int[3, SKILL_LEVEL_MAX] {
         //FIXME: パラメーター調整
-        { 300, 450, 600, 750, 900, 1050, 1200, 1350, 1500, SOLDOUT_PRICE },
-        { 300, 450, 600, 750, 900, 1050, 1200, 1350, 1500, SOLDOUT_PRICE },
-        { 300, 450, 600, 750, 900, 1050, 1200, 1350, 1500, SOLDOUT_PRICE },
-        //↓未実装
-        { SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE },
-        { SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE },
-        { SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE },
-        { SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE },
-        { SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE },
-        { SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE },
-        { SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE, SOLDOUT_PRICE }
+        { 3000, 5000, 7000, 9000, 11000, 13000, 15000, 17000, 19000,21000,23000,25000,27000,29000,31000,33000,35000,37000,39000, SOLDOUT_PRICE },
+        { 3000, 5000, 7000, 9000, 11000, 13000, 15000, 17000, 19000,21000,23000,25000,27000,29000,31000,33000,35000,37000,39000, SOLDOUT_PRICE },
+        { 3000, 5000, 7000, 9000, 11000, 13000, 15000, 17000, 19000,21000,23000,25000,SOLDOUT_PRICE,SOLDOUT_PRICE,SOLDOUT_PRICE,SOLDOUT_PRICE,SOLDOUT_PRICE,SOLDOUT_PRICE,SOLDOUT_PRICE, SOLDOUT_PRICE },
     };
 
     //スキルは購入するごとにパラメーターが上がる
@@ -72,19 +64,11 @@ public class BuySkillSystem : MonoBehaviour
     //floatにしていますが、一部int型のスキルパラメーターがあるので、(int)のキャストしなければいけないです
     //最後の10番目の値は使わない
     [SerializeField]
-    float[,] skillParameterTable = new float[SKILL_TYPE, 10] {
+    float[,] skillParameterTable = new float[3, 20] {
         //FIXME: パラメーター調整
-        { 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, },
-        { 10, 12, 14, 16, 18, 20, 22, 24, 26, 26 },
-        { 0.60f, 0.55f, 0.5f, 0.45f, 0.4f, 0.35f, 0.3f, 0.25f, 0.20f, 0.20f },
-        //↓未実装
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
+        { 10, 15, 25, 40, 60, 85, 115, 150, 190, 235, 285, 340, 400, 465, 535, 610, 690, 775, 865, 960},
+        { 100, 150, 250, 400, 600, 850, 1150, 1500, 1900, 2350, 2850, 3400, 4000, 4650, 5350, 6100, 6900, 7750, 8650, 9600},
+        { 0.60f, 0.55f, 0.5f, 0.45f, 0.4f, 0.35f, 0.3f, 0.25f, 0.20f, 0.15f, 0.10f, 0.05f, 0.05f, 0.05f, 0.05f, 0.05f, 0.05f, 0.05f, 0.05f, 0.05f},
     };
 
     void Start()

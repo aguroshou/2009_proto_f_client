@@ -5,7 +5,7 @@ using DG.Tweening;
 
 public class EnemyController : MonoBehaviour, IBulletDamaged
 {
-    public int hp = 5;
+    public int hp = 50;
 
     [SerializeField]
     private hpDirector _hpDirector;
@@ -27,6 +27,7 @@ public class EnemyController : MonoBehaviour, IBulletDamaged
 
     void Start()
     {
+        hp = 100;
         _hpDirector.HP = hp;
         targetpos = transform.position;
     }
