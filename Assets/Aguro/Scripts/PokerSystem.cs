@@ -57,6 +57,7 @@ public class PokerSystem : MonoBehaviour
     bool[] isEnemyCardSelected = new bool[numberOfCard];
 
     [SerializeField] public GameObject shuffleCardButtonObject;
+    public GameObject betPanel;
 
     //シャッフルボタンを2回以上押せなくするため
     //bool isShuffleButtonActive;
@@ -65,6 +66,7 @@ public class PokerSystem : MonoBehaviour
     private void OnEnable()
     {
         // shuffleCardButtonObject = GameObject.Find("ShuffleCardButton");
+        betPanel.SetActive(true);
         pokerPhaseEndButton.SetActive(false);
         for (int i = 0; i < numberOfCard; i++)
         {

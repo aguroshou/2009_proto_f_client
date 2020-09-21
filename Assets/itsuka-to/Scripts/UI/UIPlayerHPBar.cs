@@ -35,7 +35,8 @@ public class UIPlayerHPBar : MonoBehaviour
         GameManager.Instance.Phase.Subscribe((phase) =>
         {
             if (phase == GameManager.EGamePhase.SHOOTING_PHASE ||
-                phase == GameManager.EGamePhase.SHOOTING_READY_PHASE)
+                phase == GameManager.EGamePhase.SHOOTING_READY_PHASE ||
+                phase == GameManager.EGamePhase.POKER_PHASE)
             {
                 Debug.Log("体力バー");
                 rectTran.DOAnchorPosX(displayPosX, 1.0f);
