@@ -306,14 +306,19 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
                 {
                     rateInt = betHpIncomeChipRate.Length - 1;
                 }
-                Debug.Log("bet:" + chip);
                 chip = (int)(chip * betHpIncomeChipRate[rateInt]);
+                Debug.Log("bet:" + chip);
 
                 //// タイムボーナス
                 float value = ShootingTime.Value / shootingTimeLimit;
                 Debug.Log(value);
                 chip += (int)(500 * value) / 100 * 100;
                 Debug.Log("timevonus:" + chip);
+
+                if (ShootingTime.Value <= 0.01)
+                {
+                    chip /= 2;
+                }
 
                 Chip.Value += chip;
                 totalChip += chip;
@@ -329,6 +334,11 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 
             }
         });
+    }
+
+    public void SceneChange(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName);
     }
 
     private void Update()
