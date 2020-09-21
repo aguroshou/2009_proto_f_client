@@ -323,6 +323,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
                 if(Wave.Value >= maxPhase)
                 {
                     Phase.Value = EGamePhase.RESULT_PHASE;
+                    Playerprefs.SetInt(Playerprefs.PlayerKeys.SCORE,totalChip);
                     SceneManager.LoadScene("ResultScene");
                 }
 

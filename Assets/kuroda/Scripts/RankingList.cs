@@ -14,7 +14,8 @@ public class RankingList : MonoBehaviour
     public void Start()
     {
         var ns = FindObjectOfType<NetworkSample>();
-        StartCoroutine(ns.GameFinish(11111, OnSuccessGameFinish));
+        int score = Playerprefs.GetInt(Playerprefs.PlayerKeys.SCORE);
+        StartCoroutine(ns.GameFinish(score, OnSuccessGameFinish));
     }
 
     private void OnSuccessGameFinish(RankingListResponse rankingListResponse)
