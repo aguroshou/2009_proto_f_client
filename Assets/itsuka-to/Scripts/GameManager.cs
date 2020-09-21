@@ -9,6 +9,9 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
     private float shootingTimeLimit = 20f;
 
     [SerializeField]
+    private float shootingReadyTimeLimit = 3f;
+
+    [SerializeField]
     private int maxPhase = 10;  // 最大のウェーブ数
 
     /// <summary>
@@ -23,14 +26,12 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
     public enum EGamePhase
     {
         POKER_PHASE,  // ポーカー
+        SHOOTING_READY_PHASE,  // シューティング前の準備期間
         SHOOTING_PHASE,  // シューティング
         STATUS_POWERUP_PHASE,  // ステータスあげる
         RESULT_PHASE,  // 結果画面
         GAMEOVER,  // ゲームオーバー
     }
-
-
-
 
 
     /// <summary>
@@ -50,7 +51,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
     {
         if (Phase.Value == EGamePhase.POKER_PHASE)
         {
-            Phase.Value = EGamePhase.SHOOTING_PHASE;
+            Phase.Value = EGamePhase.SHOOTING_READY_PHASE;
         }
         else if (Phase.Value == EGamePhase.SHOOTING_PHASE)
         {
@@ -82,6 +83,10 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
                 Phase.Value = EGamePhase.POKER_PHASE;
                 IsBoss.Value = true;
             }
+        }
+        else
+        {
+            Debug.LogError("フェーズ遷移出来ないフェーズです");
         }
     }
 
@@ -144,7 +149,11 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
     ReactiveProperty<EPokerHand> playerPokerHand = new ReactiveProperty<EPokerHand>(EPokerHand.NONE);
     ReactiveProperty<EPokerHand> enemyPokerHand = new ReactiveProperty<EPokerHand>(EPokerHand.NONE);
     ReactiveProperty<EPokerWin> pokerWin = new ReactiveProperty<EPokerWin>(EPokerWin.DRAW);
-
+    /// <summary>
+    /// PokerSystemオブジェクトから味方・敵のポーカー役をセーブする
+    /// </summary>
+    /// <param name="player"></param>
+    /// <param name="enemy"></param>
     public void SavePokerHand(EPokerHand player, EPokerHand enemy)
     {
         playerPokerHand.Value = player;
@@ -162,10 +171,13 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
             pokerWin.Value = EPokerWin.DRAW;
         }
 
-        // 射撃間隔
+        // プレイヤー射撃間隔変更
         PlayerManager.Instance.ShootingInterval = 0.7f - 0.1f * (int)player;
+        // 敵側スポーン数変更
+        EnemyManager.Instance.EnemyCount = 1 + (int)enemy;
     }
 
+    public ReactiveProperty<float> ShootingReadyTime = new ReactiveProperty<float>(0f);
     public ReactiveProperty<float> ShootingTime = new ReactiveProperty<float>(0f);
 
     public ReactiveProperty<int> Chip = new ReactiveProperty<int>(10000);
@@ -174,6 +186,12 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
     {
         Phase.Subscribe((phase) =>
         {
+            // シューティングレディーフェーズ　タイマースタート
+            if (phase == EGamePhase.SHOOTING_READY_PHASE)
+            {
+                ShootingReadyTime.Value = shootingReadyTimeLimit;
+            }
+            // シューティングフェーズ　タイマースタート
             if (phase == EGamePhase.SHOOTING_PHASE)
             {
                 ShootingTime.Value = shootingTimeLimit;
@@ -183,6 +201,22 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 
     private void Update()
     {
+        // シューティング前に時間間隔を開ける
+        if (Phase.Value == EGamePhase.SHOOTING_READY_PHASE)
+        {
+            float time = ShootingReadyTime.Value;
+            time -= Time.deltaTime;
+            if (time < 0f)
+            {
+                time = 0f;
+                // ChangePhase();
+                Phase.Value = EGamePhase.SHOOTING_PHASE;
+            }
+
+            ShootingReadyTime.Value = time;
+        }
+
+        // シューティングフェーズ　タイマー管理
         if (Phase.Value == EGamePhase.SHOOTING_PHASE)
         {
             float time = ShootingTime.Value;

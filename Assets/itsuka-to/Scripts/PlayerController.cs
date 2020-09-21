@@ -52,7 +52,8 @@ public class PlayerController : MonoBehaviour, IBulletDamaged
     {
         GameManager.EGamePhase phase = GameManager.Instance.Phase.Value;
 
-        if(phase == GameManager.EGamePhase.SHOOTING_PHASE)
+        if(phase == GameManager.EGamePhase.SHOOTING_PHASE ||
+            phase == GameManager.EGamePhase.SHOOTING_READY_PHASE)
         {
             targetPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         }
