@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
+using System;
 
 public class GameManager : SingletonMonoBehaviour<GameManager>
 {
@@ -180,12 +181,43 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
     public ReactiveProperty<float> ShootingReadyTime = new ReactiveProperty<float>(0f);
     public ReactiveProperty<float> ShootingTime = new ReactiveProperty<float>(0f);
 
-    public ReactiveProperty<int> Chip = new ReactiveProperty<int>(10000);
+    public ReactiveProperty<int> Chip = new ReactiveProperty<int>(0);
+    public int[] basicIncomeChip = new int[11] {
+        0, 1000, 1200, 1400, 1600, 1800, 2000, 2200, 2400, 2600, 2800
+    };
+
+    public float[] betHpIncomeChipRate = new float[10]
+    {
+        1.0f, 1.1f, 1.25f, 1.45f, 1.7f, 2.0f, 2.35f, 2.75f, 3.2f, 3.7f
+    };
+    private bool isCrystalBreak = false;
+    private float isCrystalBreakRate = 1.2f;
+    public void SetIsCrystalBreak(bool isBreak)
+    {
+        isCrystalBreak = isBreak;
+    }
+
+    private float betHpRate = 1.0f;
+
+    /// <summary>
+    /// 賭けたHpの割合 1,0f => 何もかけてない，0f => 体力ない
+    /// </summary>
+    /// <param name="rate"></param>
+    public void SetBetHpRate(float rate)
+    {
+        betHpRate = rate;
+        PlayerManager.Instance.Hp.Value = (int)(rate * PlayerManager.Instance.MaxHp);
+    }
 
     private void Start()
     {
         Phase.Subscribe((phase) =>
         {
+            if(phase == EGamePhase.POKER_PHASE)
+            {
+                betHpRate = 1.0f;
+                isCrystalBreak = false;
+            }
             // シューティングレディーフェーズ　タイマースタート
             if (phase == EGamePhase.SHOOTING_READY_PHASE)
             {
@@ -195,6 +227,44 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
             if (phase == EGamePhase.SHOOTING_PHASE)
             {
                 ShootingTime.Value = shootingTimeLimit;
+            }
+            // チップを獲得する
+            if(phase == EGamePhase.STATUS_POWERUP_PHASE && IsBoss.Value == false)
+            {
+                int wave = Wave.Value;
+                if (wave < 1) wave = 1;
+                if(wave > basicIncomeChip.Length - 1)
+                {
+                    wave = basicIncomeChip.Length - 1;
+                }
+                int chip = basicIncomeChip[wave];  // 獲得チップ
+                //　クリスタル破壊
+                //if (isCrystalBreak)
+                //{
+                //    chip = (int)(chip * isCrystalBreakRate);
+                //}
+
+                Debug.Log("basic:" + chip);
+
+                //// 体力ベット
+                float rate = 1.0f - betHpRate;
+                rate *= 10;
+                int rateInt = (int)Math.Floor(rate);
+                if (rateInt < 0) rateInt = 0;
+                if (rateInt > betHpIncomeChipRate.Length - 1)
+                {
+                    rateInt = betHpIncomeChipRate.Length - 1;
+                }
+                Debug.Log("bet:" + chip);
+                chip = (int)(chip * betHpIncomeChipRate[rateInt]);
+
+                //// タイムボーナス
+                float value = ShootingTime.Value / shootingTimeLimit;
+                Debug.Log(value);
+                chip += (int)(500 * value) / 100 * 100;
+                Debug.Log("timevonus:" + chip);
+
+                Chip.Value += chip;
             }
         });
     }
