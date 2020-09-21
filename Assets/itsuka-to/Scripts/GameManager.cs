@@ -217,11 +217,12 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
     public ReactiveProperty<float> ShootingTime = new ReactiveProperty<float>(0f);
 
     public ReactiveProperty<int> Chip = new ReactiveProperty<int>(0);
+    //public int[] basicIncomeChip = new int[11] {
+    //    0, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 5500
+    //};
     public int totalChip = 0;  // スコアになる !!!!!!!!!
-
-
     public int[] basicIncomeChip = new int[11] {
-        0, 1000, 1200, 1400, 1600, 1800, 2000, 2200, 2400, 2600, 2800
+        0, 3000, 3000, 3000, 3500, 4000, 4500, 5000, 5500, 6000, 6500
     };
 
     public float[] betHpIncomeChipRate = new float[10]

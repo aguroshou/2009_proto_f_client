@@ -11,6 +11,8 @@ public class EnemyBullet : MonoBehaviour
     [SerializeField]
     float lifetime = 10f;
 
+    private int[] enemyAttackEachWave = { 5, 5, 6, 7, 8, 12, 15, 17, 20, 22, 25, 25 };
+
     private void Awake()
     {
         rb2d = GetComponent<Rigidbody2D>();
@@ -18,6 +20,8 @@ public class EnemyBullet : MonoBehaviour
 
     void Start()
     {
+        attackPoint = enemyAttackEachWave[GameManager.Instance.Wave.Value];
+
         rb2d.velocity = new Vector2(0f, -speed);
         StartCoroutine(TimeoutDestroyCoroutine(lifetime));
     }

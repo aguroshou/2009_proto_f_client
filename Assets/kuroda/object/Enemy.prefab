@@ -335,7 +335,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 807a03abfaa1e4cecb5af06f2afc3859, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 5
+  hp: 500
   _hpDirector: {fileID: 4543962792031574028}
   breakClip: {fileID: 0}
   breakVolume: 0

@@ -151,7 +151,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "300\u30C1\u30C3\u30D7"
+  m_Text: "3000\u30C1\u30C3\u30D7"
 --- !u!1 &1590218210775180883
 GameObject:
   m_ObjectHideFlags: 0
@@ -788,7 +788,7 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: 'Lv0
 
-    HP:10'
+    HP:100'
 --- !u!1 &1590218212167005380
 GameObject:
   m_ObjectHideFlags: 0
@@ -866,7 +866,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "300\u30C1\u30C3\u30D7"
+  m_Text: "3000\u30C1\u30C3\u30D7"
 --- !u!1 &1590218212387890194
 GameObject:
   m_ObjectHideFlags: 0
@@ -944,7 +944,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "300\u30C1\u30C3\u30D7"
+  m_Text: "3000\u30C1\u30C3\u30D7"
 --- !u!1 &1590218212431711806
 GameObject:
   m_ObjectHideFlags: 0
@@ -1157,4 +1157,4 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "Lv0\n\u653B\u6483\u529B:1"
+  m_Text: "Lv0\n\u653B\u6483\u529B:10"
