@@ -14,10 +14,10 @@ public class RankingList : MonoBehaviour
     public void Start()
     {
         var ns = FindObjectOfType<NetworkSample>();
-        StartCoroutine(ns.GetRanking(OnSuccessGetRanking));
+        StartCoroutine(ns.GameFinish(11111, OnSuccessGameFinish));
     }
 
-    private void OnSuccessGetRanking(RankingListResponse rankingListResponse)
+    private void OnSuccessGameFinish(RankingListResponse rankingListResponse)
     {
 
         int count;

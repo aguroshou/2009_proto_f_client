@@ -44,13 +44,21 @@ public class NetworkSample : MonoBehaviour
         yield return webRequest.PushUserCreate(userCreateRequest, OnSuccessUserCreate, OnErrorUserCreate);
     }
 
-    public IEnumerator GameFinish(int score)
+    public IEnumerator GameFinish(int score, Action<RankingListResponse> onSuccess)
     {
         var webRequest = new WebRequest();
         webRequest.SetServerAddress("http://54.150.161.227:8080");
         var scoreRequest = new ScoreRequest();
-        scoreRequest.score = 1000000;
-        yield return webRequest.PushGameFinish(scoreRequest, OnSuccessGameFinish, OnErrorGameFinish);
+        scoreRequest.score = score;
+        var token = Playerprefs.getplayerprefs(Playerprefs.PlayerKeys.TOKEN);
+        if (string.IsNullOrEmpty(token))
+        {
+            Debug.LogError("なんもいてないよ");
+            yield return null;
+
+        }
+        webRequest.SetToken(token);
+        yield return webRequest.PushGameFinish(scoreRequest, onSuccess, OnErrorGameFinish);
 
     }
 
@@ -94,7 +102,7 @@ public class NetworkSample : MonoBehaviour
 
     private void OnSuccessGameFinish(RankingListResponse rankingListResponse)
     {
-
+        Debug.Log("成功");
     }
 
     private void OnErrorGameFinish(string errormasage)
